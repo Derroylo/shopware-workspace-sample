@@ -1,0 +1,111 @@
+---
+# Basic setup for a shopware workspace
+# Documentation can be found here: https://www.gitpod.io/docs/references/gitpod-yml
+image:
+  file: .gitpod.dockerfile
+
+# Configure git
+gitConfig:
+  core.autocrlf: "false"
+
+# Define Ports and how they should be handled
+# Documentation: https://www.gitpod.io/docs/configure/workspaces/ports
+ports:
+  - port: 8080
+    onOpen: open-browser
+    visibility: public
+    name: Webserver
+    description: Shows the output of the Webserver
+  - port: 8025
+    onOpen: ignore
+    visibility: private
+    name: Mailhog
+    description: Shows the Webinterface for Mailhog
+  - port: 8081
+    onOpen: ignore
+    visibility: private
+    name: PhpMyAdmin
+    description: Shows the Webinterface for PhpMyAdmin
+  - port: 8082
+    onOpen: ignore
+    visibility: private
+    name: PhpCacheAdmin
+    description: Shows the Webinterface for PhpCacheAdmin (Viewer for Redis, memcached etc.)
+  - port: 6379
+    onOpen: ignore
+    visibility: private
+    name: Redis
+    description: Endpoint for Redis
+  - port: 1025
+    onOpen: ignore
+    visibility: private
+    name: Mailhog Mailserver
+    description: Endpoint for the Mailserver
+  - port: 3306
+    onOpen: ignore
+    visibility: private
+    name: MySQL
+    description: Endpoint for MySQL
+  - port: 5990
+    onOpen: ignore
+  - port: 6942
+    onOpen: ignore
+  - port: 8828
+    onOpen: ignore
+  - port: 63342
+    onOpen: ignore
+    
+# Define tasks that should be executed
+# Documentation: https://www.gitpod.io/docs/configure/workspaces/tasks
+tasks:
+    - name: Docker
+      init: |
+        docker-compose pull &&
+        gp sync-done docker-pull
+      command: |
+        docker-compose up
+    - name: Install Shopware Demo
+      init: |
+        gp sync-await docker-pull &&
+        docker-compose up -d &&
+        gp ports await 3306 &&
+        chmod +x ./.devEnv/gitpod/scripts/install_shopware_demo.sh &&
+        ./.devEnv/gitpod/scripts/install_shopware_demo.sh
+      command: gp sync-done shopware-install
+    - name: Apache
+      command: |
+        gp sync-await shopware-install &&
+        apachectl start &&
+        multitail /var/log/apache2/access.log -I /var/log/apache2/error.log
+
+# Configure phpstorm
+jetbrains:
+  phpstorm:
+    prebuilds:
+      version: both
+    plugins:
+      - de.espend.idea.php.annotation
+      - fr.adrienbrault.idea.symfony2plugin
+      - ru.adelf.idea.dotenv
+      - mobi.hsz.idea.gitignore
+      - com.github.copilot
+      - com.jetbrains.twig
+
+# Configure vscode
+vscode:
+  extensions:
+    - bmewburn.vscode-intelephense-client
+    - eamodio.gitlens
+    - ikappas.composer
+    - ms-azuretools.vscode-docker
+    - ecmel.vscode-html-css
+    - xdebug.php-debug
+    - MehediDracula.php-namespace-resolver
+    - mblode.twig-language-2
+    - wmaurer.change-case
+    - Equinusocio.vsc-community-material-theme
+    - cweijan.vscode-mysql-client2
+    - PKief.material-product-icons
+    - EditorConfig.EditorConfig
+    - streetsidesoftware.code-spell-checker
+    - rangav.vscode-thunder-client
