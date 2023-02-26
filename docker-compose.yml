@@ -50,16 +50,3 @@ services:
         PMA_PMADB: "pma"
       ports:
         - "8081:80"
-
-    # PhpCacheAdmin
-    # For more infos check: https://hub.docker.com/r/robinn/phpcacheadmin
-    phpcacheadmin:
-        image: robinn/phpcacheadmin
-        container_name: "phpcacheadmin"
-        ports:
-          - "8082:80"
-        environment:
-          - PCA_REDIS_0_HOST=redis
-          - PCA_REDIS_0_PORT=6379
-        links:
-          - redis
