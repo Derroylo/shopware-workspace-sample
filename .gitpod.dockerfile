@@ -56,9 +56,9 @@ RUN for _ppa in 'ppa:ondrej/php' 'ppa:ondrej/apache2'; do add-apt-repository -y 
 
 COPY --chown=gitpod:gitpod .devEnv/ /etc/apache2/
 
-COPY ./.devEnv/gitpod/config/apache2/apache2.conf /etc/apache2/apache2.conf
-COPY ./.devEnv/gitpod/config/apache2/envvars /etc/apache2/envvars
-COPY --chown=gitpod:gitpod ./.devEnv/gitpod/tools/phpinfo.php /var/www/html/tools/phpinfo.php
+COPY .devEnv/gitpod/config/apache2/apache2.conf /etc/apache2/apache2.conf
+COPY .devEnv/gitpod/config/apache2/envvars /etc/apache2/envvars
+COPY --chown=gitpod:gitpod .devEnv/gitpod/tools/phpinfo.php /var/www/html/tools/phpinfo.php
 
 # Enable apache modules
 RUN a2enmod headers \
