@@ -27,7 +27,8 @@ COPY --from=composer_binary /usr/bin/composer /usr/bin/composer
 RUN wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
     && sudo dpkg -i packages-microsoft-prod.deb \
     && rm packages-microsoft-prod.deb \
-    && sudo apt update
+    && apt update \
+    && apt-get install -y dotnet-runtime-7.0
 
 # Download and unzip the gitpod tool
 RUN curl -s https://api.github.com/repos/Derroylo/gitpod-tool/releases/latest | grep "browser_download_url.*zip" | cut -d : -f 2,3 | tr -d \" | wget -qi - \
