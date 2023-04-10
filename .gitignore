@@ -1,12 +1,12 @@
 # Ignore all shopware directories and files for development of this sample
-bin
-config
-custom
-files
-public
-src
-var
-vendor
+/bin/
+/config/
+/custom/
+/files/
+/public/
+/src/
+/var/
+/vendor/
 
 .env
 .htaccess
