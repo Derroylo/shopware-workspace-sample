@@ -1,0 +1,23 @@
+# Ignore all shopware directories and files for development of this sample
+/bin/
+/config/
+/custom/
+/files/
+/public/
+/src/
+/var/
+/vendor/
+
+.env
+.htaccess
+.uniqueid.txt
+composer.json
+composer.lock
+Dockerfile
+easy-coding-standard.php
+index.html
+install.lock
+license.txt
+phpstan.neon
+phpunit.xml.dist
+PLATFORM_COMMIT_SHA
