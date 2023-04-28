@@ -60,6 +60,7 @@ RUN for _ppa in 'ppa:ondrej/php' 'ppa:ondrej/apache2'; do add-apt-repository -y 
         php-redis \
         php-sqlite3 \
         php-tokenizer \
+        php-xdebug \
         php-xml \
         php-zip \
     && ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load \

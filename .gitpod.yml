@@ -19,8 +19,8 @@ ports:
   - port: 8025
     onOpen: ignore
     visibility: private
-    name: Mailhog
-    description: Shows the Webinterface for Mailhog
+    name: Mailpit
+    description: Shows the Webinterface for Mailpit
   - port: 8081
     onOpen: ignore
     visibility: private
@@ -39,8 +39,8 @@ ports:
   - port: 1025
     onOpen: ignore
     visibility: private
-    name: Mailhog Mailserver
-    description: Endpoint for the Mailserver
+    name: Mailpit Mailserver
+    description: Endpoint for Mailpit
   - port: 3306
     onOpen: ignore
     visibility: private
@@ -60,7 +60,6 @@ ports:
 tasks:
     - name: Docker Services and Shopware Install
       init: |
-        docker-compose pull &&
         docker-compose up -d &&
         gp ports await 3306 &&
         gpt shopware install_demo
