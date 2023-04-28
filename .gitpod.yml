@@ -58,23 +58,19 @@ ports:
 # Define tasks that should be executed
 # Documentation: https://www.gitpod.io/docs/configure/workspaces/tasks
 tasks:
-    - name: Docker
+    - name: Docker Services and Shopware Install
       init: |
         docker-compose pull &&
-        gp sync-done docker-pull
-      command: |
-        docker-compose up
-    - name: Install Shopware Demo
-      init: |
-        gp sync-await docker-pull &&
         docker-compose up -d &&
         gp ports await 3306 &&
-        chmod +x ./.devEnv/gitpod/scripts/install_shopware_demo.sh &&
-        ./.devEnv/gitpod/scripts/install_shopware_demo.sh
-      command: gp sync-done shopware-install
+        gpt shopware install_demo
+      command: |
+        gp sync-done shopware-install &&
+        docker-compose up
     - name: Apache
       command: |
         gp sync-await shopware-install &&
+        gpt shopware update_domain &&
         apachectl start &&
         multitail /var/log/apache2/access.log -I /var/log/apache2/error.log
 
