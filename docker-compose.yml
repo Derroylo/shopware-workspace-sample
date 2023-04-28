@@ -14,11 +14,11 @@ services:
           - MYSQL_ROOT_PASSWORD=gitpod
         command: [mysqld, --query-cache-type=1, --query_cache_size=128M, --query_cache_limit=16M, --key_buffer_size=16M, --table_open_cache=64, --sort_buffer_size=512K, --net_buffer_length=8K, --read_buffer_size=256K, --read_rnd_buffer_size=512K, --myisam_sort_buffer_size=8M]
 
-    # Mailhog (can fetch all outgoing mails and show them via webinterface)
-    # For more infos check: https://hub.docker.com/r/mailhog/mailhog/
-    mailhog:
-        image: mailhog/mailhog:latest
-        container_name: "mailhog"
+    # Mailpit (can fetch all outgoing mails and show them via webinterface)
+    # For more infos check: https://hub.docker.com/r/axllent/mailpit
+    mailpit:
+        image: axllent/mailpit:latest
+        container_name: "mailpit"
         ports:
           # make this port public for the webinterface
           - 8025:8025
