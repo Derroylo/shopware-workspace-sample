@@ -59,13 +59,15 @@ ports:
 # Documentation: https://www.gitpod.io/docs/configure/workspaces/tasks
 tasks:
     - name: Docker Services and Shopware Install
+      before: |
+        gpt php restore
       init: |
-        docker-compose up -d &&
+        gpt services start --detached &&
         gp ports await 3306 &&
         gpt shopware install_demo
       command: |
         gp sync-done shopware-install &&
-        docker-compose up
+        gpt services start
     - name: Apache
       command: |
         gp sync-await shopware-install &&
