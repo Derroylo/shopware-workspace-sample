@@ -19,8 +19,8 @@ ports:
   - port: 8025
     onOpen: ignore
     visibility: private
-    name: Mailhog
-    description: Shows the Webinterface for Mailhog
+    name: Mailpit
+    description: Shows the Webinterface for Mailpit
   - port: 8081
     onOpen: ignore
     visibility: private
@@ -39,8 +39,8 @@ ports:
   - port: 1025
     onOpen: ignore
     visibility: private
-    name: Mailhog Mailserver
-    description: Endpoint for the Mailserver
+    name: Mailpit Mailserver
+    description: Endpoint for Mailpit
   - port: 3306
     onOpen: ignore
     visibility: private
@@ -58,23 +58,20 @@ ports:
 # Define tasks that should be executed
 # Documentation: https://www.gitpod.io/docs/configure/workspaces/tasks
 tasks:
-    - name: Docker
+    - name: Docker Services and Shopware Install
+      before: |
+        gpt php restore
       init: |
-        docker-compose pull &&
-        gp sync-done docker-pull
-      command: |
-        docker-compose up
-    - name: Install Shopware Demo
-      init: |
-        gp sync-await docker-pull &&
-        docker-compose up -d &&
+        gpt services start --detached &&
         gp ports await 3306 &&
-        chmod +x ./.devEnv/gitpod/scripts/install_shopware_demo.sh &&
-        ./.devEnv/gitpod/scripts/install_shopware_demo.sh
-      command: gp sync-done shopware-install
+        gpt shopware install_demo
+      command: |
+        gp sync-done shopware-install &&
+        gpt services start
     - name: Apache
       command: |
         gp sync-await shopware-install &&
+        gpt shopware update_domain &&
         apachectl start &&
         multitail /var/log/apache2/access.log -I /var/log/apache2/error.log
 
@@ -109,3 +106,5 @@ vscode:
     - EditorConfig.EditorConfig
     - streetsidesoftware.code-spell-checker
     - rangav.vscode-thunder-client
+    - redhat.vscode-xml
+    - aswinkumar863.smarty-template-support

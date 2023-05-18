@@ -1,0 +1,11 @@
+php:
+  version: 8.2
+  config:
+    memory_limit: 512M
+    xdebug.start_with_request: yes
+    xdebug.mode: debug
+services:
+  active:
+  - mysql
+  - mailpit
+  - phpmyadmin

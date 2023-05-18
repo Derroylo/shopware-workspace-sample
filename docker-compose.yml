@@ -4,6 +4,8 @@ services:
     # MySql Server
     # For more infos check: https://hub.docker.com/_/mysql/
     mysql:
+        labels:
+          com.gitpod.gpt.category: "database"
         image: mysql:5.7
         container_name: "mysql"
         ports:
@@ -14,11 +16,13 @@ services:
           - MYSQL_ROOT_PASSWORD=gitpod
         command: [mysqld, --query-cache-type=1, --query_cache_size=128M, --query_cache_limit=16M, --key_buffer_size=16M, --table_open_cache=64, --sort_buffer_size=512K, --net_buffer_length=8K, --read_buffer_size=256K, --read_rnd_buffer_size=512K, --myisam_sort_buffer_size=8M]
 
-    # Mailhog (can fetch all outgoing mails and show them via webinterface)
-    # For more infos check: https://hub.docker.com/r/mailhog/mailhog/
-    mailhog:
-        image: mailhog/mailhog:latest
-        container_name: "mailhog"
+    # Mailpit (can fetch all outgoing mails and show them via webinterface)
+    # For more infos check: https://hub.docker.com/r/axllent/mailpit
+    mailpit:
+        labels:
+            com.gitpod.gpt.category: "mail"
+        image: axllent/mailpit:latest
+        container_name: "mailpit"
         ports:
           # make this port public for the webinterface
           - 8025:8025
@@ -28,6 +32,8 @@ services:
     # Redis Server
     # For more infos check: https://hub.docker.com/_/redis
     redis:
+        labels:
+            com.gitpod.gpt.category: "cache"
         image: redis:latest
         container_name: "redis"
         ports:
@@ -36,6 +42,8 @@ services:
     # PhpMyAdmin
     # For more infos check: https://hub.docker.com/_/phpmyadmin
     phpmyadmin:
+      labels:
+            com.gitpod.gpt.category: "tools"
       image: phpmyadmin/phpmyadmin:latest
       container_name: "pma"
       restart: always
@@ -50,3 +58,18 @@ services:
         PMA_PMADB: "pma"
       ports:
         - "8081:80"
+
+    # PhpCacheAdmin
+    # For more infos check: https://hub.docker.com/r/robinn/phpcacheadmin
+    phpcacheadmin:
+        labels:
+            com.gitpod.gpt.category: "tools"
+        image: robinn/phpcacheadmin
+        container_name: "phpcacheadmin"
+        ports:
+            - "8082:80"
+        environment:
+            - PCA_REDIS_0_HOST=redis
+            - PCA_REDIS_0_PORT=6379
+        links:
+            - redis
