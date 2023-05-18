@@ -106,3 +106,5 @@ vscode:
     - EditorConfig.EditorConfig
     - streetsidesoftware.code-spell-checker
     - rangav.vscode-thunder-client
+    - redhat.vscode-xml
+    - aswinkumar863.smarty-template-support

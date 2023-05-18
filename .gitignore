@@ -22,3 +22,5 @@ license.txt
 phpstan.neon
 phpunit.xml.dist
 PLATFORM_COMMIT_SHA
+package.json
+package-lock.json
