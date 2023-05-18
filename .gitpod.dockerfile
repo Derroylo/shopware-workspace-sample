@@ -30,13 +30,6 @@ RUN wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-p
     && apt update \
     && apt-get install -y dotnet-runtime-7.0
 
-# Download and unzip the gitpod tool
-RUN curl -s https://api.github.com/repos/Derroylo/gitpod-tool/releases/latest | grep "browser_download_url.*zip" | cut -d : -f 2,3 | tr -d \" | wget -qi - \
-    && mkdir /home/gitpod/.gpt \
-    && unzip gitpod-tool.zip -d /home/gitpod/.gpt/ \
-    && rm gitpod-tool.zip \
-    && echo "alias gpt='dotnet $HOME/.gpt/gitpod-tool.dll'" > .bashrc.d/gitpod-tool
-
 # Install everything related to php and apache2
 # Based on https://github.com/gitpod-io/workspace-images/tree/main/chunks/tool-nginx
 # Check https://launchpad.net/~ondrej for more php extensions
@@ -98,12 +91,17 @@ RUN curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh |
 # above, we are adding the lazy nvm init to .bashrc, because one is executed on interactive shells, the other for non-interactive shells (e.g. plugin-host)
 COPY --chown=gitpod:gitpod ./.devEnv/gitpod/scripts/nvm-lazy.sh /home/gitpod/.nvm/nvm-lazy.sh
 
-# Restore previous php version and ini settings
-RUN dotnet /home/gitpod/.gpt/gitpod-tool.dll php restore
-
 # Clean up
 RUN apt-get clean \
     && apt-get autoremove -y \
     && rm -Rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/*
 
 USER gitpod
+
+# Download and unzip the gitpod tool (Make sure the user is gitpod, otherwise you will get permission denied)
+RUN curl -s https://api.github.com/repos/Derroylo/gitpod-tool/releases/latest | grep "browser_download_url.*zip" | cut -d : -f 2,3 | tr -d \" | wget -qi - \
+    && mkdir /home/gitpod/.gpt \
+    && unzip gitpod-tool.zip -d /home/gitpod/.gpt/ \
+    && rm gitpod-tool.zip \
+    && chmod +x /home/gitpod/.gpt/gpt.sh \
+    && echo "alias gpt='$HOME/.gpt/gpt.sh'" > .bashrc.d/gitpod-tool
