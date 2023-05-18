@@ -5,7 +5,7 @@
 # gptBranch: shopware
 # gptBranchDescription: Commands for shopware
 # gptCommand: install_demo
-# gptDescription: Download the shopware installer and unpack it
+# gptDescription: Download the shopware installer, unpack it and install shopware
 
 result=false
 for dir in \
@@ -46,9 +46,10 @@ echo 'APP_SECRET=23456' >> .env
 # Set the memory limit to 512M
 gpt php ini set memory_limit 512M
 
-# Update the sales channel domain via cli
-./bin/console sales-channel:update:domain $(gp url 8080 | awk -F[/:] '{print $4}')
+# Update the sales channel domain
+export APP_URL=$(gp url 8080);
+echo "UPDATE shopware.sales_channel_domain SET url = '$APP_URL' WHERE url LIKE 'http%';" | mysql -uroot -pgitpod;
 
-# An alternative version to change the domain dirctly via the mysql cli
-# export APP_URL=https://$(gp url 8080 | awk -F[/:] '{print $4}');
-# echo "UPDATE shopware.sales_channel_domain SET url = '$APP_URL' WHERE url LIKE 'https://%';" | mysql -uroot -pgitpod --host localhost --port 3306 --protocol=TCP;
+# Install demo data
+./bin/console framework:demodata --products 150 -e prod
+./bin/console dal:refresh:index -e prod
