@@ -10,4 +10,4 @@
 #./bin/console sales-channel:update:domain $(gp url 8080 | awk -F[/:] '{print $4}')
 
 export APP_URL=$(gp url 8080);
-echo "UPDATE shopware.sales_channel_domain SET url = '$APP_URL' WHERE url LIKE 'http%';" | mysql -uroot -pgitpod;
+echo "UPDATE shopware.sales_channel_domain SET url = '$APP_URL' WHERE url LIKE 'http%';" | mysql -uroot -pgitpod --protocol tcp;
