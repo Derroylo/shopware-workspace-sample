@@ -28,7 +28,7 @@ Some additional services are already added via docker-compose.yml but you can ad
 - [Gitpod](https://www.gitpod.io/docs/introduction/getting-started)
 - [Base of the Dockerfile](https://github.com/gitpod-io/workspace-images/blob/main/chunks/tool-nginx/Dockerfile)
 - [gitpod.yml](https://www.gitpod.io/docs/references/gitpod-yml)
-- [GPT](https://github.com/Derroylo/gitpod-tool) - Coming soon
+- [GPT](https://github.com/Derroylo/gitpod-tool) [GPT Documentation](https://derroylo.github.io)
 
 ## Informations
 - xDebug is enabled via default, so the console might show some deprecated notices during setup
