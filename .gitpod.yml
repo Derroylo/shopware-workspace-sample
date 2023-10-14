@@ -67,12 +67,10 @@ tasks:
         gpt shopware install_demo
       command: |
         gp sync-done shopware-install &&
-        gpt services start &&
-        gp sync-done services-start
+        gpt services start
     - name: Apache
       command: |
         gp sync-await shopware-install &&
-        gp sync-await services-start &&
         gpt shopware update_domain &&
         apachectl start &&
         multitail /var/log/apache2/access.log -I /var/log/apache2/error.log
