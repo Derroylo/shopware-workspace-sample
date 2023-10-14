@@ -6,7 +6,7 @@ FROM composer:${COMPOSER_VERSION} AS composer_binary
 FROM gitpod/workspace-base
 
 # Arguments
-ARG NODE_VERSION=18.17.1
+ARG NODE_VERSION=18.18.2
 ARG APACHE_DOCROOT_IN_REPO="public"
 
 # Environment
@@ -51,6 +51,7 @@ RUN for _ppa in 'ppa:ondrej/php' 'ppa:ondrej/apache2'; do add-apt-repository -y 
         php-net-ftp \
         php-pear \
         php-redis \
+        php-sodium \
         php-sqlite3 \
         php-tokenizer \
         php-xdebug \
@@ -64,6 +65,8 @@ COPY --chown=gitpod:gitpod .devEnv/ /etc/apache2/
 COPY .devEnv/gitpod/apache2/config/apache2.conf /etc/apache2/apache2.conf
 COPY .devEnv/gitpod/apache2/config/envvars /etc/apache2/envvars
 COPY --chown=gitpod:gitpod .devEnv/gitpod/tools/phpinfo.php /var/www/html/tools/phpinfo.php
+COPY --chown=gitpod:gitpod .devEnv/gitpod/tools/xdebuginfo.php /var/www/html/tools/xdebuginfo.php
+COPY --chown=gitpod:gitpod .devEnv/gitpod/tools/adminer.php /var/www/html/tools/adminer.php
 
 # Enable apache modules
 RUN a2enmod headers \

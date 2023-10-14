@@ -24,9 +24,9 @@ fi
 if [ -s "$NVM_DIR/nvm.sh" ]; then
 	# load the real nvm on first use
 	nvm() {
-			# shellcheck disable=SC1090,SC1091
-			source "$NVM_DIR"/nvm.sh
-			nvm "$@"
+		# shellcheck disable=SC1090,SC1091
+		source "$NVM_DIR"/nvm.sh
+		nvm "$@"
 	}
 fi
 
