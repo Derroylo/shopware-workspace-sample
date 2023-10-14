@@ -43,9 +43,6 @@ echo 'APP_SECRET=23456' >> .env
 # Execute the setup
 ./bin/console system:install --basic-setup --create-database --shop-name demo --shop-email demo@demo.de --shop-locale en-GB --shop-currency eur
 
-# Set the memory limit to 512M
-gpt php ini set memory_limit 512M
-
 # Update the sales channel domain
 export APP_URL=$(gp url 8080);
 echo "UPDATE shopware.sales_channel_domain SET url = '$APP_URL' WHERE url LIKE 'http%';" | mysql -uroot -pgitpod --protocol tcp;
