@@ -6,7 +6,7 @@ FROM composer:${COMPOSER_VERSION} AS composer_binary
 FROM gitpod/workspace-base
 
 # Arguments
-ARG NODE_VERSION=16
+ARG NODE_VERSION=18.18.2
 ARG APACHE_DOCROOT_IN_REPO="public"
 
 # Environment
@@ -51,6 +51,7 @@ RUN for _ppa in 'ppa:ondrej/php' 'ppa:ondrej/apache2'; do add-apt-repository -y 
         php-net-ftp \
         php-pear \
         php-redis \
+        php-sodium \
         php-sqlite3 \
         php-tokenizer \
         php-xdebug \
@@ -64,6 +65,8 @@ COPY --chown=gitpod:gitpod .devEnv/ /etc/apache2/
 COPY .devEnv/gitpod/apache2/config/apache2.conf /etc/apache2/apache2.conf
 COPY .devEnv/gitpod/apache2/config/envvars /etc/apache2/envvars
 COPY --chown=gitpod:gitpod .devEnv/gitpod/tools/phpinfo.php /var/www/html/tools/phpinfo.php
+COPY --chown=gitpod:gitpod .devEnv/gitpod/tools/xdebuginfo.php /var/www/html/tools/xdebuginfo.php
+COPY --chown=gitpod:gitpod .devEnv/gitpod/tools/adminer.php /var/www/html/tools/adminer.php
 
 # Enable apache modules
 RUN a2enmod headers \
@@ -81,6 +84,8 @@ RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | s
     shopware-cli \
     mysql-client-8.0
 
+USER gitpod
+
 # Install nodejs, yarn
 RUN curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | PROFILE=/dev/null bash \
     && bash -c ". .nvm/nvm.sh \
@@ -89,14 +94,7 @@ RUN curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh |
         && npm install -g typescript yarn pnpm node-gyp" \
     && echo ". ~/.nvm/nvm-lazy.sh"  >> /home/gitpod/.bashrc.d/50-node
 # above, we are adding the lazy nvm init to .bashrc, because one is executed on interactive shells, the other for non-interactive shells (e.g. plugin-host)
-COPY --chown=gitpod:gitpod ./.devEnv/gitpod/scripts/nvm-lazy.sh /home/gitpod/.nvm/nvm-lazy.sh
-
-# Clean up
-RUN apt-get clean \
-    && apt-get autoremove -y \
-    && rm -Rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/*
-
-USER gitpod
+COPY ./.devEnv/gitpod/scripts/nvm-lazy.sh /home/gitpod/.nvm/nvm-lazy.sh
 
 # Download and unzip the gitpod tool (Make sure the user is gitpod, otherwise you will get permission denied)
 RUN curl -s https://api.github.com/repos/Derroylo/gitpod-tool/releases/latest | grep "browser_download_url.*zip" | cut -d : -f 2,3 | tr -d \" | wget -qi - \
@@ -105,3 +103,10 @@ RUN curl -s https://api.github.com/repos/Derroylo/gitpod-tool/releases/latest | 
     && rm gitpod-tool.zip \
     && chmod +x /home/gitpod/.gpt/gpt.sh \
     && echo "alias gpt='$HOME/.gpt/gpt.sh'" > .bashrc.d/gitpod-tool
+
+USER root
+
+# Clean up
+RUN apt-get clean \
+    && apt-get autoremove -y \
+    && rm -Rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/*

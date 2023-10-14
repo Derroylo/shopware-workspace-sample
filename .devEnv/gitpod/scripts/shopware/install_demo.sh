@@ -26,6 +26,9 @@ if ( $result ); then
     exit 1
 fi
 
+# Rename the readme.md of this repo as it will be overwritten by the install process
+mv README.md README_GITPOD.md
+
 # Download and unzip the shopware installer
 wget https://releases.shopware.com/sw6/install_v6.4.20.1_1d0e1a2bb4c4e0395c390b0911efd19748b1d9d0.zip
 unzip -o install_v6.4.20.1_1d0e1a2bb4c4e0395c390b0911efd19748b1d9d0.zip
@@ -42,9 +45,6 @@ echo 'APP_SECRET=23456' >> .env
 
 # Execute the setup
 ./bin/console system:install --basic-setup --create-database --shop-name demo --shop-email demo@demo.de --shop-locale en-GB --shop-currency eur
-
-# Set the memory limit to 512M
-gpt php ini set memory_limit 512M
 
 # Update the sales channel domain
 export APP_URL=$(gp url 8080);

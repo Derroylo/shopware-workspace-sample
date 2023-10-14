@@ -60,9 +60,9 @@ ports:
 tasks:
     - name: Docker Services and Shopware Install
       before: |
-        gpt php restore
+        gpt restore all
       init: |
-        gpt services start --detached &&
+        gpt services start -d &&
         gp ports await 3306 &&
         gpt shopware install_demo
       command: |

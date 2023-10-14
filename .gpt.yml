@@ -1,11 +1,21 @@
+config:
+  allowPreReleases: false
 php:
   version: 8.2
   config:
-    memory_limit: 512M
+    opcache.enable: off
+    xdebug.mode: off
     xdebug.start_with_request: yes
-    xdebug.mode: debug
+  configWeb:
+    memory_limit: 512M
+  configCLI:
+    max_execution_time: 0
+    memory_limit: -1
+nodejs:
+  version: 18.18.2
 services:
   active:
   - mysql
   - mailpit
   - phpmyadmin
+shellScripts: {}
