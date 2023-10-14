@@ -29,9 +29,10 @@ Some additional services are already added via docker-compose.yml but you can ad
 - [Gitpod](https://www.gitpod.io/docs/introduction/getting-started)
 - [Base of the Dockerfile](https://github.com/gitpod-io/workspace-images/blob/main/chunks/tool-nginx/Dockerfile)
 - [gitpod.yml](https://www.gitpod.io/docs/references/gitpod-yml)
-- [GPT](https://github.com/Derroylo/gitpod-tool) - Coming soon
+- [GPT](https://github.com/Derroylo/gitpod-tool) [GPT Documentation](https://derroylo.github.io)
 
 ## Informations
+- During setup there might be some deprecation message shown. This is normal and can be ignored
 - Add `/phpinfo` to the url of the frontend (`https://8000-xxxxx.ws-xx.gitpod.io/`) to show the current used php version, active modules and settings
 - Add `/xdebuginfo` to the url of the frontend (`https://8000-xxxxx.ws-xx.gitpod.io/`) to show the current xdebug settings
 - Add `/adminer` to the url of the frontend (`https://8000-xxxxx.ws-xx.gitpod.io/`) to open Adminer, an alternative to phpmyadmin
@@ -45,4 +46,4 @@ Some additional services are already added via docker-compose.yml but you can ad
 - Added xdebug info shortcut
 - Updated .gpt.yml for GPT 0.4.x
 - Corrected some problems with choosing nodejs version
-- phpmyadmin and phpcacheadmin wouldn´t start sometime correctly
+- phpmyadmin and phpcacheadmin wouldn´t start sometimes correctly
